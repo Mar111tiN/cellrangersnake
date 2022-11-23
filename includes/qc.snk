@@ -1,0 +1,11 @@
+rule read_SCE:
+    input: 
+        path = get_sample_path
+    output:
+        SCE = directory("{sample}/SCE")
+    conda:
+        f"../{config['envs']}/qc-env.yml"
+    threads:
+        1
+    script:
+        "../scripts/readSCE.R"
