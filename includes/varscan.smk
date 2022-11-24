@@ -1,0 +1,59 @@
+rule varscan:
+    input:
+        unpack(get_bam_pair)
+    output:
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.indel",
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.snp",
+        pileup = "pileup/{sample}_{tumor}-{normal}.{chrom}.gz"
+    threads:
+        config['varscan']['threads']
+    params:
+        bedfile = full_path('bed_file'),
+        refgen = get_ref,
+        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
+        vcf = "--output-vcf 1 " if config['varscan']['vcf'] else "", 
+        min = f"--min-coverage {config['varscan']['min-coverage']} --min-var-freq {config['varscan']['min-var-freq']} --min-freq-for-hom {config['varscan']['min-freq-for-hom']}",
+        p = f"--p-value {config['varscan']['p-value']} --somatic-p-value {config['varscan']['somatic-p-value']}",
+        np = f"--normal-purity {config['varscan']['normal-purity']} --tumor-purity {config['varscan']['tumor-purity']}",
+        cleanpileup = os.path.join(scriptdir, "shell/cleanpileup.mawk")
+    conda:
+        f"../{config['envs']}/varscan-env.yml"
+    log:
+        "logs/varscan/{sample}_{tumor}-{normal}.{chrom}.log"
+    shell:
+        "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} -l {params.bedfile} {input.normal_bam} {input.tumor_bam} | "
+        "tee >({params.cleanpileup} -d | gzip > {output.pileup}) | "
+        "varscan somatic /dev/stdin {params.vcf} --mpileup 1 "
+        "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
+
+
+rule varscan2table:
+    input:
+        unpack(get_anno_input)
+    output:
+        "varscan/{sample}_{tumor}-{normal}.{chrom}.csv"
+    threads: 6
+    conda:
+        f"../{config['envs']}/vcf-env.yml"
+    params:
+        refgen = full_path('genome'),
+    script:
+        "../scripts/varscan2table.py"
+
+
+rule merge_varscan_tables:
+    input:
+        expand("varscan/{{sample}}_{{tumor}}-{{normal}}.{chrom}.csv", chrom=chrom_list)
+    output:
+        "table/{sample}_{tumor}-{normal}.csv"
+    threads: 1
+    run:
+        table_dfs = []
+        for table_file in input:
+            table_df = pd.read_csv(table_file, sep='\t', header=None, names=['Chr', 'Start', 'End', 'Ref', 'Alt', 'somatic_status', 'TR1', 'TR1+', 'TR2', 'TR2+', 'NR1', 'NR1+', 'NR2', 'NR2+', 'somaticP', 'variantP'])
+            table_dfs.append(table_df)
+        table_df = pd.concat(table_dfs)
+        table_df = sort_df(table_df)
+
+        table_df.to_csv(output[0], sep='\t', index=False)
+

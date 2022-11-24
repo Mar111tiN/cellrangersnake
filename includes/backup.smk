@@ -1,8 +1,3 @@
-import pandas as pd
-import os
-import re
-
-
 ############# SNAKEFILE ###########################
 def get_files(config={}):
     '''
@@ -42,7 +37,6 @@ def get_chrom_list(config):
     # switch for use of "chr"-prefix
     chrom = "chr" if config["ref"]["build"] == "hg38" else ""
     return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
-
 
 
 

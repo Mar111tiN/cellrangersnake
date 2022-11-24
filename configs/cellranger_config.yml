@@ -1,0 +1,4 @@
+---
+cellranger:
+    transcriptome_path: Dropbox/Icke/Work/10x/10xBioinfo/cellrangerpipe  # abs or relative to HOME
+
