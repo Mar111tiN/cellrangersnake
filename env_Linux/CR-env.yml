@@ -1,0 +1,16 @@
+channels:
+  - bih-cubi
+  - conda-forge
+  - bioconda
+  - default
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1
+  - _openmp_mutex=4.5
+  - bcl2fastq2=2.20.0.422
+  - libgcc=7.2.0
+  - libgcc-ng=11.2.0
+  - libgomp=11.2.0
+  - libstdcxx-ng=11.2.0
+  - libzlib=1.2.11
+  - zlib=1.2.11

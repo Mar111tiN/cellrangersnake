@@ -1,0 +1,435 @@
++ unset DRMAA_LIBRARY_PATH
++++ which conda
++++ alias
++++ eval declare -f
+++++ declare -f
++++ /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot conda
+++ /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda shell.bash hook
++ eval 'export CONDA_EXE='\''/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda'\''
+export _CE_M='\'''\''
+export _CE_CONDA='\'''\''
+export CONDA_PYTHON_EXE='\''/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/python'\''
+
+# Copyright (C) 2012 Anaconda, Inc
+# SPDX-License-Identifier: BSD-3-Clause
+
+__add_sys_prefix_to_path() {
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA}" ] && [ -n "${WINDIR+x}" ]; then
+        SYSP=$(\dirname "${CONDA_EXE}")
+    else
+        SYSP=$(\dirname "${CONDA_EXE}")
+        SYSP=$(\dirname "${SYSP}")
+    fi
+
+    if [ -n "${WINDIR+x}" ]; then
+        PATH="${SYSP}/bin:${PATH}"
+        PATH="${SYSP}/Scripts:${PATH}"
+        PATH="${SYSP}/Library/bin:${PATH}"
+        PATH="${SYSP}/Library/usr/bin:${PATH}"
+        PATH="${SYSP}/Library/mingw-w64/bin:${PATH}"
+        PATH="${SYSP}:${PATH}"
+    else
+        PATH="${SYSP}/bin:${PATH}"
+    fi
+    \export PATH
+}
+
+__conda_exe() (
+    __add_sys_prefix_to_path
+    "$CONDA_EXE" $_CE_M $_CE_CONDA "$@"
+)
+
+__conda_hashr() {
+    if [ -n "${ZSH_VERSION:+x}" ]; then
+        \rehash
+    elif [ -n "${POSH_VERSION:+x}" ]; then
+        :  # pass
+    else
+        \hash -r
+    fi
+}
+
+__conda_activate() {
+    if [ -n "${CONDA_PS1_BACKUP:+x}" ]; then
+        # Handle transition from shell activated with conda <= 4.3 to a subsequent activation
+        # after conda updated to >= 4.4. See issue #6173.
+        PS1="$CONDA_PS1_BACKUP"
+        \unset CONDA_PS1_BACKUP
+    fi
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix "$@")" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+__conda_reactivate() {
+    \local ask_conda
+    ask_conda="$(PS1="${PS1:-}" __conda_exe shell.posix reactivate)" || \return
+    \eval "$ask_conda"
+    __conda_hashr
+}
+
+conda() {
+    \local cmd="${1-__missing__}"
+    case "$cmd" in
+        activate|deactivate)
+            __conda_activate "$@"
+            ;;
+        install|update|upgrade|remove|uninstall)
+            __conda_exe "$@" || \return
+            __conda_reactivate
+            ;;
+        *)
+            __conda_exe "$@"
+            ;;
+    esac
+}
+
+if [ -z "${CONDA_SHLVL+x}" ]; then
+    \export CONDA_SHLVL=0
+    # In dev-mode CONDA_EXE is python.exe and on Windows
+    # it is in a different relative location to condabin.
+    if [ -n "${_CE_CONDA:+x}" ] && [ -n "${WINDIR+x}" ]; then
+        PATH="$(\dirname "$CONDA_EXE")/condabin${PATH:+":${PATH}"}"
+    else
+        PATH="$(\dirname "$(\dirname "$CONDA_EXE")")/condabin${PATH:+":${PATH}"}"
+    fi
+    \export PATH
+
+    # We'\''re not allowing PS1 to be unbound. It must at least be set.
+    # However, we'\''re not exporting it, which can cause problems when starting a second shell
+    # via a first shell (i.e. starting zsh from bash).
+    if [ -z "${PS1+x}" ]; then
+        PS1=
+    fi
+fi
+
+conda activate base'
+++ export CONDA_EXE=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda
+++ CONDA_EXE=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda
+++ export _CE_M=
+++ _CE_M=
+++ export _CE_CONDA=
+++ _CE_CONDA=
+++ export CONDA_PYTHON_EXE=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/python
+++ CONDA_PYTHON_EXE=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/python
+++ '[' -z x ']'
+++ conda activate base
+++ local cmd=activate
+++ case "$cmd" in
+++ __conda_activate activate base
+++ '[' -n '' ']'
+++ local ask_conda
++++ PS1=
++++ __conda_exe shell.posix activate base
++++ __add_sys_prefix_to_path
++++ '[' -n '' ']'
+++++ dirname /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda
++++ SYSP=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin
+++++ dirname /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin
++++ SYSP=/fast/users/szyskam_c/work/miniconda/envs/snake-env
++++ '[' -n '' ']'
++++ PATH=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin
++++ export PATH
++++ /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda shell.posix activate base
+++ ask_conda='PS1='\''(snake-env) '\''
+export PATH='\''/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_PROMPT_MODIFIER='\''(snake-env) '\'''
+++ eval 'PS1='\''(snake-env) '\''
+export PATH='\''/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin'\''
+export CONDA_SHLVL='\''2'\''
+export CONDA_PROMPT_MODIFIER='\''(snake-env) '\'''
++++ PS1='(snake-env) '
++++ export PATH=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin
++++ PATH=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin
++++ export CONDA_SHLVL=2
++++ CONDA_SHLVL=2
++++ export 'CONDA_PROMPT_MODIFIER=(snake-env) '
++++ CONDA_PROMPT_MODIFIER='(snake-env) '
+++ __conda_hashr
+++ '[' -n '' ']'
+++ '[' -n '' ']'
+++ hash -r
++ conda activate snake-env
++ local cmd=activate
++ case "$cmd" in
++ __conda_activate activate snake-env
++ '[' -n '' ']'
++ local ask_conda
+++ PS1='(snake-env) '
+++ __conda_exe shell.posix activate snake-env
+++ __add_sys_prefix_to_path
+++ '[' -n '' ']'
++++ dirname /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda
+++ SYSP=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin
++++ dirname /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin
+++ SYSP=/fast/users/szyskam_c/work/miniconda/envs/snake-env
+++ '[' -n '' ']'
+++ PATH=/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/envs/snake-env/bin:/fast/users/szyskam_c/work/miniconda/condabin:/data/gpfs-1/users/szyskam_c/work/utils/myscripts/symlinx:/data/gpfs-1/users/szyskam_c/work/miniconda/bin:/data/gpfs-1/users/szyskam_c/.local/bin:/data/gpfs-1/users/szyskam_c/work/utils/cellranger-3.1.0:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/slurm/active/bin:/opt/slurm/active/sbin
+++ export PATH
+++ /fast/users/szyskam_c/work/miniconda/envs/snake-env/bin/conda shell.posix activate snake-env
+Could not find conda environment: snake-env
+You can list all discoverable environments with `conda info --envs`.
+
++ ask_conda=
++ return
++ echo /fast/users/szyskam_c/work/miniconda/envs/snake-env activated
+/fast/users/szyskam_c/work/miniconda/envs/snake-env activated
++ DRMAA=' -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}'
++ DRMAA=' -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads} -o /data/gpfs-1/users/szyskam_c/scratch/slogs/10xCellRanger-6346466/{rule}-%j.log'
++ snakemake --unlock --rerun-incomplete
+Unlocking working directory.
+[1;35;2m13:49:48[0m : [1;36;1mCreated ADT feature files for runs 221004, 221018[0m
++ snakemake --rerun-incomplete --cluster-config configs/cluster/cellranger-cluster.json --drmaa ' -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads} -o /data/gpfs-1/users/szyskam_c/scratch/slogs/10xCellRanger-6346466/{rule}-%j.log' -prk -j 1000
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 1000
+Job stats:
+job               count    min threads    max threads
+--------------  -------  -------------  -------------
+all                   1              1              1
+run_cellranger       14             30             30
+total                15              1             30
+
+Select jobs to execute...
+
+[Fri Nov 25 13:49:51 2022]
+rule run_cellranger:
+    input: lib_files/library_12T.csv
+    output: cellranger/12T.done
+    jobid: 7
+    reason: Missing output files: cellranger/12T.done
+    wildcards: sample=12T
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=12T --libraries=lib_files/library_12T.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221004.csv; rm 12T/_*; rm -r 12T/SC_RNA_COUNTER_CS; touch cellranger/12T.done
+Submitted DRMAA job 7 with external jobid 6346473.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_12H.csv
+    output: cellranger/12H.done
+    jobid: 9
+    reason: Missing output files: cellranger/12H.done
+    wildcards: sample=12H
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=12H --libraries=lib_files/library_12H.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221004.csv; rm 12H/_*; rm -r 12H/SC_RNA_COUNTER_CS; touch cellranger/12H.done
+Submitted DRMAA job 9 with external jobid 6346474.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_L09TO.csv
+    output: cellranger/L09TO.done
+    jobid: 3
+    reason: Missing output files: cellranger/L09TO.done
+    wildcards: sample=L09TO
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=L09TO --libraries=lib_files/library_L09TO.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm L09TO/_*; rm -r L09TO/SC_RNA_COUNTER_CS; touch cellranger/L09TO.done
+Submitted DRMAA job 3 with external jobid 6346475.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_18_H.csv
+    output: cellranger/18_H.done
+    jobid: 27
+    reason: Missing output files: cellranger/18_H.done
+    wildcards: sample=18_H
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=18_H --libraries=lib_files/library_18_H.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221018.csv; rm 18_H/_*; rm -r 18_H/SC_RNA_COUNTER_CS; touch cellranger/18_H.done
+Submitted DRMAA job 27 with external jobid 6346476.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_09T.csv
+    output: cellranger/09T.done
+    jobid: 1
+    reason: Missing output files: cellranger/09T.done
+    wildcards: sample=09T
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=09T --libraries=lib_files/library_09T.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221004.csv; rm 09T/_*; rm -r 09T/SC_RNA_COUNTER_CS; touch cellranger/09T.done
+Submitted DRMAA job 1 with external jobid 6346477.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_18_TO1.csv
+    output: cellranger/18_TO1.done
+    jobid: 29
+    reason: Missing output files: cellranger/18_TO1.done
+    wildcards: sample=18_TO1
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=18_TO1 --libraries=lib_files/library_18_TO1.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm 18_TO1/_*; rm -r 18_TO1/SC_RNA_COUNTER_CS; touch cellranger/18_TO1.done
+Submitted DRMAA job 29 with external jobid 6346478.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_18_TO2.csv
+    output: cellranger/18_TO2.done
+    jobid: 31
+    reason: Missing output files: cellranger/18_TO2.done
+    wildcards: sample=18_TO2
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=18_TO2 --libraries=lib_files/library_18_TO2.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm 18_TO2/_*; rm -r 18_TO2/SC_RNA_COUNTER_CS; touch cellranger/18_TO2.done
+Submitted DRMAA job 31 with external jobid 6346479.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_18_HO.csv
+    output: cellranger/18_HO.done
+    jobid: 33
+    reason: Missing output files: cellranger/18_HO.done
+    wildcards: sample=18_HO
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=18_HO --libraries=lib_files/library_18_HO.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm 18_HO/_*; rm -r 18_HO/SC_RNA_COUNTER_CS; touch cellranger/18_HO.done
+Submitted DRMAA job 33 with external jobid 6346480.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_L12TO2.csv
+    output: cellranger/L12TO2.done
+    jobid: 13
+    reason: Missing output files: cellranger/L12TO2.done
+    wildcards: sample=L12TO2
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=L12TO2 --libraries=lib_files/library_L12TO2.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm L12TO2/_*; rm -r L12TO2/SC_RNA_COUNTER_CS; touch cellranger/L12TO2.done
+Submitted DRMAA job 13 with external jobid 6346481.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_12_HO.csv
+    output: cellranger/12_HO.done
+    jobid: 15
+    reason: Missing output files: cellranger/12_HO.done
+    wildcards: sample=12_HO
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=12_HO --libraries=lib_files/library_12_HO.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm 12_HO/_*; rm -r 12_HO/SC_RNA_COUNTER_CS; touch cellranger/12_HO.done
+Submitted DRMAA job 15 with external jobid 6346482.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_17T.csv
+    output: cellranger/17T.done
+    jobid: 17
+    reason: Missing output files: cellranger/17T.done
+    wildcards: sample=17T
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=17T --libraries=lib_files/library_17T.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221004.csv; rm 17T/_*; rm -r 17T/SC_RNA_COUNTER_CS; touch cellranger/17T.done
+Submitted DRMAA job 17 with external jobid 6346483.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_17H.csv
+    output: cellranger/17H.done
+    jobid: 19
+    reason: Missing output files: cellranger/17H.done
+    wildcards: sample=17H
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=17H --libraries=lib_files/library_17H.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221004.csv; rm 17H/_*; rm -r 17H/SC_RNA_COUNTER_CS; touch cellranger/17H.done
+Submitted DRMAA job 19 with external jobid 6346484.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_L17HO.csv
+    output: cellranger/L17HO.done
+    jobid: 23
+    reason: Missing output files: cellranger/L17HO.done
+    wildcards: sample=L17HO
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=L17HO --libraries=lib_files/library_L17HO.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A; rm L17HO/_*; rm -r L17HO/SC_RNA_COUNTER_CS; touch cellranger/L17HO.done
+Submitted DRMAA job 23 with external jobid 6346485.
+
+[Fri Nov 25 13:49:52 2022]
+rule run_cellranger:
+    input: lib_files/library_18_T.csv
+    output: cellranger/18_T.done
+    jobid: 25
+    reason: Missing output files: cellranger/18_T.done
+    wildcards: sample=18_T
+    threads: 30
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+cellranger count --localcores 30 --id=18_T --libraries=lib_files/library_18_T.csv --transcriptome=/fast/groups/ag_schmueck/work/ref/hg38/10x/refdata-gex-GRCh38-2020-A --feature-ref=ADT_files/ADT_221018.csv; rm 18_T/_*; rm -r 18_T/SC_RNA_COUNTER_CS; touch cellranger/18_T.done
+Submitted DRMAA job 25 with external jobid 6346486.
+[Fri Nov 25 15:58:40 2022]
+Finished job 27.
+1 of 15 steps (7%) done
+[Fri Nov 25 16:27:50 2022]
+Finished job 9.
+2 of 15 steps (13%) done
+[Fri Nov 25 18:13:04 2022]
+Finished job 7.
+3 of 15 steps (20%) done
+[Fri Nov 25 21:36:25 2022]
+Finished job 1.
+4 of 15 steps (27%) done
+[Fri Nov 25 21:41:45 2022]
+Finished job 3.
+5 of 15 steps (33%) done
+[Fri Nov 25 22:28:39 2022]
+Finished job 23.
+6 of 15 steps (40%) done
+[Fri Nov 25 23:17:49 2022]
+Finished job 19.
+7 of 15 steps (47%) done
+[Fri Nov 25 23:31:52 2022]
+Finished job 15.
+8 of 15 steps (53%) done
+[Fri Nov 25 23:37:13 2022]
+Finished job 17.
+9 of 15 steps (60%) done
+[Fri Nov 25 23:52:55 2022]
+Finished job 29.
+10 of 15 steps (67%) done
+[Sat Nov 26 02:04:52 2022]
+Finished job 33.
+11 of 15 steps (73%) done
+[Sat Nov 26 02:09:23 2022]
+Finished job 13.
+12 of 15 steps (80%) done
+[Sat Nov 26 02:51:17 2022]
+Finished job 25.
+13 of 15 steps (87%) done
+[Sat Nov 26 03:18:19 2022]
+Finished job 31.
+14 of 15 steps (93%) done
+Select jobs to execute...
+
+[Sat Nov 26 03:18:20 2022]
+localrule all:
+    input: cellranger/09T.done, cellranger/09T.done, cellranger/L09TO.done, cellranger/L11TO.done, cellranger/12T.done, cellranger/12T.done, cellranger/12H.done, cellranger/12H.done, cellranger/L12TO1.done, cellranger/L12TO2.done, cellranger/12_HO.done, cellranger/17T.done, cellranger/17T.done, cellranger/17H.done, cellranger/17H.done, cellranger/L17TO.done, cellranger/L17HO.done, cellranger/18_T.done, cellranger/18_T.done, cellranger/18_H.done, cellranger/18_H.done, cellranger/18_TO1.done, cellranger/18_TO2.done, cellranger/18_HO.done
+    jobid: 0
+    reason: Input files updated by another job: cellranger/12T.done, cellranger/L09TO.done, cellranger/17H.done, cellranger/18_TO1.done, cellranger/18_HO.done, cellranger/L12TO2.done, cellranger/09T.done, cellranger/18_T.done, cellranger/18_H.done, cellranger/18_TO2.done, cellranger/17T.done, cellranger/12H.done, cellranger/12_HO.done, cellranger/L17HO.done
+    resources: tmpdir=/fast/users/szyskam_c/scratch/tmp
+
+[Sat Nov 26 03:18:20 2022]
+Finished job 0.
+15 of 15 steps (100%) done
+Complete log: /data/gpfs-1/home/users/szyskam_c/snakes/cellrangersnake/.snakemake/log/2022-11-25T134949.770736.snakemake.log
+[1;35;2m13:49:51[0m : [1;36;1mCreated ADT feature files for runs 221004, 221018[0m

@@ -29,3 +29,11 @@ def get_path(path, file_type="file", config={}):
     else:
         show_output(f"{file_type} {file_path} cannot be found!", color="warning")
         return
+
+
+def static_path(file):
+    '''
+    returns the absolute path when given relative to static folder
+    '''
+
+    return os.path.join(config['paths']['static'], file)

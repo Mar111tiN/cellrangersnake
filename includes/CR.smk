@@ -19,11 +19,16 @@ rule make_lib:
 rule run_cellranger:
     input:
         "lib_files/library_{sample}.csv"
+    threads:
+        config['cellranger']['threads']
     output:
         "cellranger/{sample}.done"
     params:
-        transcripts=config['cellranger']['transcriptome_path'],
+        transcripts=static_path(config['cellranger']['transcriptome_path']),
         feature_ref=ADT_CLI
     shell:
-        "echo cellranger count --id={wildcards.sample} --libraries=lib_files/library_{wildcards.sample}.csv --transcriptome={params.transcripts}{params.feature_ref}; "
+        "cellranger count --localcores {threads} --id={wildcards.sample} --libraries=lib_files/library_{wildcards.sample}.csv "
+        "--transcriptome={params.transcripts}{params.feature_ref}; "
+        "rm {wildcards.sample}/_*; "
+        "rm -r {wildcards.sample}/SC_RNA_COUNTER_CS; "
         "touch cellranger/{wildcards.sample}.done"

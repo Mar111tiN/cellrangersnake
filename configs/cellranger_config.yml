@@ -1,4 +1,4 @@
 ---
 cellranger:
-    transcriptome_path: Dropbox/Icke/Work/10x/10xBioinfo/cellrangerpipe  # abs or relative to HOME
-
+    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A  # relative to static
+    threads: 30

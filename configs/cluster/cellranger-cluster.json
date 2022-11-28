@@ -1,15 +1,15 @@
 {
     "__default__": {
-      "t": "00:45",
+      "t": "00:10",
       "mem": "1000",
       "nodes": 1,
       "partition": "debug",
       "threads": "{threads}",
-      "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+      "name": "{rule}:{wildcards.sample}"
     },
-    "varscan": {
-      "t": "00:45",
-      "mem": 500,
-      "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+    "run_cellranger": {
+      "t": "12:00",
+      "partition":"medium",
+      "mem": 5000
     }
   }
