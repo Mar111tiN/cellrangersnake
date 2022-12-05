@@ -31,25 +31,22 @@
   + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml
 
 
+
+
+
+## Setup a run
+The cellrangersnake pipeline is controlled globally by the config yaml-file you can edit with a simple text-editor. Here, you basically set the paths to the data, output folder and required setup files. These setup files are:
+
++ ### the Seqexcel file
+  * A master excel file containing all the required info for running the pipeline. Best look at the test file provided for the test run. All required fields are shaded green. 
+
++ ### ADT file
+  * A file listing the ADT-antibodies for each run. 
+
 ## Test the Pipeline
 * for testing, I provide testdata as dropbox links for you to download by running simple scripts
 * the downloaded bam folder contains bam files of AML tumor normal pairs in three different sizes (500MB to 25GB)
 * the bam files are derived from exom-sequenced samples that have been prepped using the Agilent SureSelect XT-HS kit with HumanAllExome_v7 baits
-
-
-### create static files for cell ranger
-* for the pipeline to work for bam files created with this specific exon prep, several database files and other accessory data have to be prepared
-* for testing (and for general use with SureSelect HAEv7 data), static data is provided as dropbox links
-* run the script download_static.sh with the path to the desired static folder (50GB of space is required) as argument:
-```
-$ . setup/download_static.sh <path-to-static-folder>
-```
-* adjust \<STATIC\> to the desired path and provide a working directory (\<WKDIR\>) in the yaml config file configs/general/config_testgeneral.yaml
-
-### get the annovar executables
-* most tools used by the pipeline are provided as packages and are installed via the init.sh script
-* However, the tool annovar used for populating mutation lists with data from multiple databases has to be downloaded [here](https://www.openbioinformatics.org/annovar/annovar_download_form.php) upon signing a user agreement
-* after downloading the annovar executables, provide the path to the folder containing the annovar perl scripts (\<ANNOPATH\>) in the TOOLS section of configs/general/config_testgeneral.yaml 
 
 ### run the test
 * for testing all bam files (small to large) make the config/config_test.yaml the active config which is used by the pipeline masterfile Snakefile:

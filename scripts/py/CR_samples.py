@@ -100,7 +100,6 @@ def make_lib_file(sc_df, sample="", filepath=""):
     '''
     create the files for the cellranger run
     '''
-    print(sample)
     lib_df =  sc_df.query('index == @sample').loc[:, ['fastqs', 'sample', 'library_type']]
     lib_df.to_csv(filepath, sep=",", index=False)
     return lib_df

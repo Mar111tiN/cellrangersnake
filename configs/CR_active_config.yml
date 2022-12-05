@@ -7,3 +7,5 @@ paths:
     ADT_file: snakes/cellrangersnake/info/ADT.xlsx
 configs:
     CR_config: configs/cellranger_config.yml
+cellranger:
+    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A
