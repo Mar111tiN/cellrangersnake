@@ -1,9 +1,8 @@
 ---
 paths:
     static: /fast/groups/ag_schmueck/work/ref/hg38
-    base_path: snakes/cellrangersnake  # abs or relative to HOME
-    output_path: scratch/projects/snaketest
-    Seqexcel: snakes/cellrangersnake/test/test_sample_info.xlsx # abs or relative to HOME
+    output_path: /data/gpfs-1/users/szyskam_c/scratch/projects/snaketest
+    Seqexcel: snakes/cellrangersnake/test/test_sample_info.xlsx
     ADT_file: snakes/cellrangersnake/test/testADT.xlsx
 configs:
-    CR_config: configs/cellranger_config.yml
+    CR_config: test/cellranger_config.yml

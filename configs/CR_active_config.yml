@@ -1,11 +1,8 @@
 ---
 paths:
     static: /fast/groups/ag_schmueck/work/ref/hg38
-    base_path: /data/gpfs-1/users/szyskam_c/snakes/cellrangersnake  # abs or relative to HOME
     output_path: /data/gpfs-1/users/szyskam_c/scratch/projects/snaketest
-    Seqexcel: snakes/cellrangersnake/info/OverviewSamplesSequencing.xlsx # abs or relative to HOME
+    Seqexcel: snakes/cellrangersnake/info/OverviewSamplesSequencing.xlsx
     ADT_file: snakes/cellrangersnake/info/ADT.xlsx
 configs:
     CR_config: configs/cellranger_config.yml
-cellranger:
-    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A
