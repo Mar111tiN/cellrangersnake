@@ -10,6 +10,6 @@
     "run_cellranger": {
       "t": "12:00",
       "partition":"medium",
-      "mem": 5000
+      "mem": 8000
     }
   }

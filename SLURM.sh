@@ -34,8 +34,8 @@ unset DRMAA_LIBRARY_PATH
 
 # make conda available
 eval "$($(which conda) shell.bash hook)"
-# activate snakemake env
-conda activate snake-env;
+# activate cellranger env
+conda activate cellranger-env;
 echo $CONDA_PREFIX "activated";
 
 

@@ -7,17 +7,29 @@
 
 ### Prerequisites
 * linux environment
-* package manager conda is installed (see [official conda documentation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html) for instructions)
+* package manager conda is installed (see [mambaforge/miniforge git repo](https://github.com/conda-forge/miniforge#mambaforge) for instructions)
+* package manager conda is deprecated for performance reasons but can be used as well installed (see [official conda documentation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html) for instructions)
 
-### Install pipeline
-You need access to a cluster environment (documentation and updates only for SLURM workload management system!)
+### Install cellrangersnake pipeline
+* move to destination folder for pipeline code
+* clone the somVarWES code from github: `git clone https://github.com/Mar111tiN/cellrangersnake.git && cd cellrangersnake`
+* create the mamba-environment to run snakemake pipeline with cellranger: `mamba create -n cellranger-env -f env_Linux/snake-env.yml`
+* activate environment: `mamba activate cellranger-env`
+* copy the conda config file `.condarc` to your home folder to apply conda settings and channels required for snakemake to work properly: `cp settings/.condarc ~`
 
-* enter cluster environment and move to folder you want to install the pipeline code into
-* clone the somVarWES code from github and run the init.sh to install packages and conda environment
+### Install cellranger Software Suite and Accessories
+* Download and install cellranger software (follow instructions in [official download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest))
+  + cellranger is under licence and needs to be downloaded from the official page
+* extract software: `tar -xzvf cellranger-7.0.1.tar.gz && mv cellranger-7.0.1 `<target_path>
+* make cellranger executables accessible to your environment. There are two options:
+  + add to PATH: 
+    * For global access run: `export PATH=<target_path>/bin:$PATH` 
+    * For exclusive access from your environment run: `conda env config vars set PATH=<target_path>/bin:$PATH`
+  + set a symlink to your conda environment: `ln -s <target_path>/bin/cellranger ${CONDA_PREFIX}/bin/cellranger`
+* Download and install bundled cellranger reference data (including Star-Index, transcriptome data etc ([official download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest))
+  + data is large (17GB for hg38) and recommended to be stored centrally on cluster for shared access (group folder etc.): `tar -xzvf <ref-data>`
+  + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml
 
-```
-$ git clone https://github.com/Mar111tiN/somVarWES.git && cd somVarWES && source setup/init.sh
-```
 
 ## Test the Pipeline
 * for testing, I provide testdata as dropbox links for you to download by running simple scripts
