@@ -3,7 +3,7 @@
 * uses a summary excel sheet for performing the cellranger analysis
 * SLURM cluster environments
 
-## Setup
+## Install
 
 ### Prerequisites
 * linux environment
@@ -32,7 +32,7 @@
   + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml (absolute path or relative to the static path set in the main config file)
 
 
-## Setup a run
+## Setup run
 The cellrangersnake pipeline is controlled globally by the config yaml-file you can edit with a simple text-editor. Here, you basically set the paths to the data, output folder and required setup files and link your cellranger settings via the `cellranger_config.yml` yaml file. Please see the test_config.yml in the test folder. These setup files are:
 
 + ### the Seqexcel file
