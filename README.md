@@ -42,7 +42,10 @@ The cellrangersnake pipeline is controlled globally by the config yaml-file you 
   * A file listing the ADT-antibodies for each run. 
 
 ## Test the Pipeline
-* for testing, I provide testdata as dropbox links for you to download by running simple scripts
+* for testing, I provide testdata as dropbox links for you to download by running these commands:
+  + move to/create target folder for storing 3Gb of fastq files for testrun
+  + `wget https://www.dropbox.com/s/fictlpunkpumxpx/testdata.tar?dl=1 && tar -xvf testdata.tar && rm testdata.tar``
+  + the path containing the fastq files `<target_folder>/cellrangertestdata` has to be set in the excel Seqexcel file in the SeqAnalysis sheet for each sample you want to run
 * the downloaded bam folder contains bam files of AML tumor normal pairs in three different sizes (500MB to 25GB)
 * the bam files are derived from exom-sequenced samples that have been prepped using the Agilent SureSelect XT-HS kit with HumanAllExome_v7 baits
 
