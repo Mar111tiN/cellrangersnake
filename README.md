@@ -57,7 +57,7 @@ The cellrangersnake pipeline is controlled globally by the config yaml-file you 
 
 
 ## Test the Pipeline
-Before running pipelines on the cluster, it is strongly recommended to run the test interactively first. It takes appr. 75 min using 20 cores and 80GB RAM. 
+Before running pipelines on the cluster, it is strongly recommended to run the test interactively first. It takes appr. 75 min using 20 cores and 80GB RAM (or appr. 45 min with 140 GB RAM). 
 ### setup
 *  For testing, I provide testdata as dropbox links for you to download by running these commands:
   + move to/create target folder for storing 3Gb of fastq files for testrun
