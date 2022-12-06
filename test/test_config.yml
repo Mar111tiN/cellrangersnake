@@ -1,8 +1,8 @@
 ---
 paths:
-    static: /fast/groups/ag_schmueck/work/ref/hg38
+    static: /fast/groups/ag_schmueck/work/ref/hg38 # optional, can be used to set the root path for the cellranger_config.yml 
     output_path: /data/gpfs-1/users/szyskam_c/scratch/projects/snaketest
-    Seqexcel: snakes/cellrangersnake/test/test_sample_info.xlsx
-    ADT_file: snakes/cellrangersnake/test/testADT.xlsx
+    Seqexcel: snakes/cellrangersnake/test/test_sample_info.xlsx # relative to the folder containing the Snakefile
+    ADT_file: snakes/cellrangersnake/test/testADT.xlsx # relative to the folder containing the Snakefile
 configs:
     CR_config: test/cellranger_config.yml

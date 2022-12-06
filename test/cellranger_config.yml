@@ -1,0 +1,3 @@
+cellranger:
+    transcriptome_path: <path>/10x/refdata-gex-GRCh38-2020-A
+    threads: 30
