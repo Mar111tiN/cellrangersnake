@@ -20,7 +20,7 @@
 
 # Set the expected running time of your job (-t or --time).
 # Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
-#SBATCH --time=20:00:00
+#SBATCH --time=1:00:00
 
 SNAKE_HOME=$(pwd);
 
@@ -43,6 +43,6 @@ echo $CONDA_PREFIX "activated";
 DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
 snakemake --unlock --rerun-incomplete;
-snakemake --rerun-incomplete --cluster-config configs/cluster/cellranger-cluster.json --drmaa "$DRMAA" -prk -j 1000;
+snakemake --rerun-incomplete --snakefile Snaketest --cluster-config configs/cluster/test-cluster.json --drmaa "$DRMAA" -prk -j 62;
 # -k ..keep going if job fails
 # -p ..print out shell commands
