@@ -13,9 +13,9 @@
 ### Install cellrangersnake pipeline
 * move to destination folder for pipeline code
 * clone the somVarWES code from github: `$ git clone https://github.com/Mar111tiN/cellrangersnake.git && cd cellrangersnake`
-* create the mamba-environment to run snakemake pipeline with cellranger: `mamba create -n cellranger-env -f env_Linux/snake-env.yml`
+* create the mamba-environment to run snakemake pipeline with cellranger: `mamba env create -n cellranger-env -f env_Linux/snake-env.yml`
 * activate environment: `$ mamba activate cellranger-env`
-* copy the conda config file `.condarc` to your home folder to apply conda settings and channels required for snakemake to work properly: `cp settings/.condarc ~`
+* copy the conda config file `.condarc` to your home folder to apply conda settings and channels required for snakemake to work properly: `cp setup/.condarc ~`
 
 ### Install cellranger Software Suite and Accessories
 * Download and install cellranger software (follow instructions in [official download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest))
@@ -27,7 +27,8 @@
     * For exclusive access from your environment run: `$ conda env config vars set PATH=<target_path>/bin:$PATH`
   + set a symlink to your conda environment: `$ ln -s <target_path>/bin/cellranger ${CONDA_PREFIX}/bin/cellranger`
 * Download and install bundled cellranger reference data (including Star-Index, transcriptome data etc ([official download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest))
-  + data is large (17GB for hg38) and recommended to be stored centrally on cluster for shared access (group folder etc.): `$ tar -xzvf <ref-data>`
+  + `wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz`
+  + data is large (17GB for hg38) and recommended to be stored centrally on cluster for shared access (group folder etc.): `$ tar -xzvf refdata-gex*`
   + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml
 
 
