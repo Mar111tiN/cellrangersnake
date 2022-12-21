@@ -37,7 +37,8 @@ The cellrangersnake pipeline is controlled globally by the config yaml-file you 
 
 + ### the CR_config file
   * contains the data pertaining to running the cellranger command line tool
-  * ::DEV:: any command-line arguments should be set here and passed to the cellranger rule `includes/CR.smk` as a snakemake param (see how the feature ref is passed through via `params.feature_ref` as an example)
+  * ::DEV:: any command-line parameter needed by cellranger should be set here and passed to the cellranger rule `includes/CR.smk` as a snakemake param (see how the feature ref is passed through via `params.feature_ref` as an example)
+  * update: specific arguments that need to be passed to running cellranger can be passed as a list of params to the args field in the `cellranger_config.yml`
 + ### the Seqexcel file
   * A master excel file containing all the required info for running the pipeline. It has a complicated structured grown by necessity and sample names and info hase to be set in various fields. Best look at the test file `test_sample_info.xlsx` provided for the test run as a minimal example. All required fields are shaded green:
     + Status Sheet:
@@ -51,6 +52,7 @@ The cellrangersnake pipeline is controlled globally by the config yaml-file you 
       * 'Pool-ID'-field can be optionally set for fastq-identifiers (not required: see above)
     + SeqAnalysis:
       * 'fastq-path': set the folder containing the fastq-files for that sample
+  * alternatively, you can use a simple tab-separated sample_sheet formatted as the `test_sample_sheet.csv` in the test folder. Setting a path to such a sample_sheet makes the pipeline ignore the excel sheet. The sample_sheet approach gives you more flexibility for files coming from different paths
 + ### the fastq-files have to be named according to bcl2fastq-convention as `[fastq-identifier]_S1_L00[Lane Number]_[Read Type]_001.fastq.gz`
 
 + ### ADT file
