@@ -1,4 +1,4 @@
-# Pipeline for preprocessing of scRNA-seq raw data with the cellranger pipeline
+ --rerun-incomplete# Pipeline for preprocessing of scRNA-seq raw data with the cellranger pipeline
 
 * uses a summary excel sheet for performing the cellranger analysis
 * SLURM cluster environments
@@ -70,7 +70,7 @@ Before running pipelines on the cluster, it is strongly recommended to run the t
 ### run the test
 * from the login-node, request an interactive cluster session with sufficient RAM and cores (eg: `$ srun -p long --immediate=120 --time 3:00:00 --cpus-per-task=20 --nodes=1 --mem=140G --pty bash -i`)
 * activate the cellranger-env `mamba activate cellranger-env` if not already and move to the root of the cellrangersnake codebase. 
-* run the snakemake pipeline locally with 20 cores: `$ snakemake -prj 20 --use-conda --snakefile Snaketest`
+* run the snakemake pipeline locally with 20 cores: `$ snakemake -prj 20 --use-conda --snakefile Snaketest --rerun-incomplete`
 * inspect the output data in the <output_path> provided in the `test_config.yml`
 * if this was successful, remove the output_path and testrun the pipeline using job submission via SLURM: `$ sbatch -J testCRpipeline SLURMtest.sh`
 * monitor the run with `$ squeue --me` and `$ cat slogs/*` and inspect the data after completion
