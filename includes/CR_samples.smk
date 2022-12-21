@@ -67,15 +67,17 @@ def make_scRNA_df(config):
     ]].merge(dfs['SeqAnalysis'].loc[:, [
         'Sample', 'fastq-path'
     ]], on=['Sample']).merge(dfs['Lib']).rename({'fastq-path':'fastqs'}, axis=1)
-    
     # convert fields
     # Run field for use in ADT setup
     df['Run'] = df['Date'].astype(str).str.split(" ").str[0].str.replace("^20", "", regex=True).str.replace("-", "", regex=False)
     for col in ['Pool-ID', 'scProject', 'BIMSB-ID', 'Sample']:
         df[col] = df[col].fillna("")
+    
     # convert integer_type BIMSB-IDs to three-digits
-    df.loc[df['BIMSB-ID'].str.match("^[0-9]+$"), 'BISMB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
-    df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'] + "_" + df['Sample']
+    df.loc[df['BIMSB-ID'].astype(str).str.match("^[0-9]+$"), 'BISMB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
+    print(df.dtypes)
+    
+    df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'].astype(str) + "_" + df['Sample']
     df.loc[:, 'sample'] = df['sample'].str.lstrip("_").str.replace("__", "_")
     sample_df = df.loc[:, ['Sample', 'sample', 'fastqs', 'Run', 'library_type']].set_index("Sample")
     sample_df.to_csv("test_samples.csv", sep="\t")

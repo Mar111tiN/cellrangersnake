@@ -1,5 +1,5 @@
 cellranger:
-    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A
+    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A # relative to the static folder
     threads: 30
     args: # arguments here are passed to the Cellranger invocation as is
         # - --check-library-compatibility=false

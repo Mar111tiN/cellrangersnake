@@ -10,8 +10,9 @@ def get_CR_args(w):
     '''
     takes additional cellranger arguments from the config list
     '''
-    CR_args = config['cellranger']['args']
-    return " " + " ".join(CR_args) if len(CR_args) else ""
+    CR_args = config['cellranger'].get('args',[""])
+    return " " + " ".join(CR_args) if CR_args else ""
+
 
 rule make_lib: 
     output:
