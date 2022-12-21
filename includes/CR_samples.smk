@@ -74,8 +74,8 @@ def make_scRNA_df(config):
         df[col] = df[col].fillna("")
     
     # convert integer_type BIMSB-IDs to three-digits
-    df.loc[df['BIMSB-ID'].astype(str).str.match("^[0-9]+$"), 'BISMB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
-    print(df.dtypes)
+    df.loc[df['BIMSB-ID'].astype(str).str.match("^[0-9]+$"), 'BIMSB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
+    print(df['BIMSB-ID'])
     
     df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'].astype(str) + "_" + df['Sample']
     df.loc[:, 'sample'] = df['sample'].str.lstrip("_").str.replace("__", "_")
