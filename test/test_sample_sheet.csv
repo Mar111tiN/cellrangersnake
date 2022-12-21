@@ -1,4 +1,4 @@
 Sample	sample	fastqs	Run	library_type
-09T	P1752_A_SP193_29_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Gene Expression
-09T	P1752_B_SP193_39_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Antibody Capture
+09T	P1752_A_SP193_029_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Gene Expression
+09T	P1752_B_SP193_039_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Antibody Capture
 L09TO	P1752_A_SP193_18_L09TO	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221006	Gene Expression
