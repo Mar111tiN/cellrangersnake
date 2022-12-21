@@ -30,19 +30,20 @@ mkdir -p $LOGDIR;
 
 set -x;
 
-unset DRMAA_LIBRARY_PATH
-
 # make conda available
 eval "$($(which conda) shell.bash hook)"
 # activate cellranger env
-mamba activate cellranger-env;
+conda activate cellranger-env;
 echo $CONDA_PREFIX "activated";
 
 
 # !!! leading white space is important
-DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
-DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --unlock --rerun-incomplete;
-snakemake --rerun-incomplete --cluster-config configs/cluster/cellranger-cluster.json --drmaa "$DRMAA" -prk -j 1000;
+SLURM_CLUSTER="sbatch -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
+SLURM_CLUSTER="$SLURM_CLUSTER -o ${LOGDIR}/{rule}-%j.log";
+snakemake --unlock
+snakemake --use-conda \
+--rerun-incomplete \
+--cluster-config configs/cluster/cellranger-cluster.json --cluster "$SLURM_CLUSTER" \
+-prkj 3000;
 # -k ..keep going if job fails
 # -p ..print out shell commands

@@ -11,7 +11,7 @@ def full_path(path, base_folder=os.environ['HOME']):
     return os.path.join(base_folder,path)
 
 
-def get_path(path, file_type="file", config={}):
+def get_path(path, file_type="file", config={}, base_folder=os.environ['HOME']):
     '''
     retrieves a path value from the given key in the config and does some checks
     '''
@@ -22,7 +22,7 @@ def get_path(path, file_type="file", config={}):
     if not (file_path := pc[path]):
         show_output("Please provide a {file_type} in the configs", color="warning")
         return
-    file_path = full_path(pc[path], base_folder=os.environ['HOME'])
+    file_path = full_path(pc[path], base_folder=base_folder)
         
     if os.path.isfile(file_path):
         return file_path

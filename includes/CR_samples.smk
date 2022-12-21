@@ -11,7 +11,7 @@ def read_seqexcel_sheet(sample_excel, sheet=""):
     df = pd.read_excel(sample_excel, sheet_name=sheet).loc[:, lambda s: ~s.iloc[0].isna()]
     col_df = df.T.reset_index().iloc[:, :2].rename({'index':"main", 0:"name"}, axis=1)
     col_df.loc[col_df['main'].str.startswith("Unnamed"), "main"] = np.nan
-    col_df['main'] = col_df['main'].fillna(method="ffill").fillna("")
+    col_df['main'] = col_df['main'].fillna(method="ffill").fillna("").str.replace(" ", "")
     col_df.loc[:, "col"] = col_df['name'].str.cat(others=col_df['main'], sep="-").str.rstrip("-")
     cols = col_df['col']
     df.columns = cols
@@ -24,8 +24,15 @@ def make_scRNA_df(config):
     '''
     creates from all single cell infos in the sample_excel a condensed library_df
     '''
+    # test for existence of sample_sheet
+    sample_sheet = get_path('sample_sheet', config=config, base_folder=snakedir)
+    if sample_sheet:
+        sample_df = pd.read_csv(sample_sheet, sep="\t").set_index('Sample')
+        show_output(f"Using sample sheet {config['paths']['sample_sheet']}")
+        print(sample_df)
+        return sample_df
     
-    sample_excel = get_path('Seqexcel', file_type="sequencing overview", config=config)
+    sample_excel = get_path('Seqexcel', file_type="sequencing overview", config=config, base_folder=snakedir)
     # load the analysis_df for fastq-path and
     dfs = {}
     for sheet in ['SeqAnalysis', 'Status']:
@@ -49,7 +56,6 @@ def make_scRNA_df(config):
         "GEX":"Gene Expression",
         "FeatureBarcode": "Antibody Capture"
     }
-
     for c in dc.keys():
         cols = ['Sample'] + [col for col in df.columns if col.endswith(c)]
         dfs[c] = df.loc[df[f'BIMSB-ID-{c}'].notna(), cols].rename({col:col.replace(f"-{c}", "") for col in df.columns}, axis=1)
@@ -65,10 +71,15 @@ def make_scRNA_df(config):
     # convert fields
     # Run field for use in ADT setup
     df['Run'] = df['Date'].astype(str).str.split(" ").str[0].str.replace("^20", "", regex=True).str.replace("-", "", regex=False)
-    df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'].astype(str).str.zfill(3) + "_" + df['Sample']
+    for col in ['Pool-ID', 'scProject', 'BIMSB-ID', 'Sample']:
+        df[col] = df[col].fillna("")
+    # convert integer_type BIMSB-IDs to three-digits
+    df.loc[df['BIMSB-ID'].str.match("^[0-9]+$"), 'BISMB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
+    df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'] + "_" + df['Sample']
     df.loc[:, 'sample'] = df['sample'].str.lstrip("_").str.replace("__", "_")
-    return df.loc[:, ['Sample', 'sample', 'fastqs', 'Run', 'library_type']].set_index("Sample")
-
+    sample_df = df.loc[:, ['Sample', 'sample', 'fastqs', 'Run', 'library_type']].set_index("Sample")
+    sample_df.to_csv("test_samples.csv", sep="\t")
+    return sample_df
 
 def get_adf(run, ADT_excel=""):
     '''
@@ -96,7 +107,8 @@ def make_ADT_files(sc_df):
         os.mkdir("ADT_files")
     runs = []
     for run in sc_df.loc[sc_df['library_type'] == "Antibody Capture", 'Run'].unique():
-        adf = get_adf(run, get_path('ADT_file', file_type="ADT excel file", config=config))
-        runs.append(run)
+        adf_excel = get_path('ADT_file', file_type="ADT excel file", config=config, base_folder=snakedir)
+        adf = get_adf(run, adf_excel)
+        runs.append(str(run))
         adf.to_csv(get_ADT_path(run), sep=",", index=False)
     show_output(f"Created ADT feature files for runs {', '.join(runs)}", color="success")

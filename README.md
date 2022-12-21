@@ -46,12 +46,12 @@ The cellrangersnake pipeline is controlled globally by the config yaml-file you 
         + for scRNA-seq, you have to provide the identifier of the corresponding fastq-files in the '10x-GEX-ID' field
         + for CITE-seq, you have to additionally provide the identifier for the FeatureBarcode fastq-files in the '10x-FB-ID' field and a run 'Date' which has to match a sheet in the ADT file (see below)
       * only files with 'SeqStatus' > 3 will be run, so you can easily control the samples that will be run setting this field
-      *  'scProject' is optionally used for building the correct fastq-identifiers. fastq-files from the BIMSB are named `"{Libraries:Pool-ID}_{Status:scProject}_{10x-GEX-ID<3digit>}_{Sample}_*.fastq.gz"` queried from the respective 'SeqAnalysis:fastq-path'. For other naming schemes just leave empty strings for the fields not needed, and the identifier is build from the remaining fields in the above order joined by `_`
+      *  'scProject' is optionally used for building the correct fastq-identifiers. fastq-identifiers from the BIMSB are created  `"{Libraries:Pool-ID}_{Status:scProject}_{10x-GEX-ID<3digit>}_{Sample}_*.fastq.gz"` queried from the respective 'SeqAnalysis:fastq-path'. For other naming schemes just leave empty strings for the fields not needed, and the identifier is build from the remaining fields in the above order joined by `_`
     + Libraries Sheet:
       * 'Pool-ID'-field can be optionally set for fastq-identifiers (not required: see above)
     + SeqAnalysis:
       * 'fastq-path': set the folder containing the fastq-files for that sample
-
++ ### the fastq-files have to be named according to bcl2fastq-convention as `[fastq-identifier]_S1_L00[Lane Number]_[Read Type]_001.fastq.gz`
 
 + ### ADT file
   * A file listing the ADT-antibodies for each run. For each sample of 'type' CITE-seq, the 'Date' will be converted into a six-digit of form YYMMDD and matched to a sheet of that name in the ADT excel file. This data is used to create a feature ref file for running cellranger. 

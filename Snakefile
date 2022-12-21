@@ -1,7 +1,7 @@
 from yaml import CLoader as Loader, load, dump
 
 # ############ SETUP ##############################
-configfile: "configs/CR_active_config.yml"
+configfile: "configs/run_config.yml"
 
 # setup the working directory
 workdir: config['paths']['output_path']
@@ -22,6 +22,10 @@ config = add_config(config, config_name="CR_config")
 
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df = make_scRNA_df(config)
+
+# export for testing
+sample_df.to_csv("info_sample.tsv", sep="\t")
+
 make_ADT_files(sample_df)
 
 # ############ INCLUDES ##############################  
