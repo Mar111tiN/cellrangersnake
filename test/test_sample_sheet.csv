@@ -1,9 +1,4 @@
 Sample	sample	fastqs	Run	library_type
-CD8-1	DRFZ1_FB_CD8-1	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211001	Antibody Capture
-CD8-1	MiSeq_GEX_CD8-1	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211001	Gene Expression
-CD8-1S	DRFZ1_FB_CD8-1S	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211001	Antibody Capture
-CD8-1S	MiSeq_GEX_CD8-1S	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211001	Gene Expression
-CD8-2	MiSeq_GEX_CD8-2	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211108	Gene Expression
-CD8-2	DRFZ1_FB_CD8-2	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211108	Antibody Capture
-CD8-2S	MiSeq_GEX_CD8-2S	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211108	Gene Expression
-CD8-2S	DRFZ1_FB_CD8-2S	/fast/groups/ag_schmueck/work/NGSData/10xRun1/fastq	211108	Antibody Capture
+09T	P1752_A_SP193_029_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Gene Expression
+09T	P1752_B_SP193_039_09T	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221004	Antibody Capture
+L09TO	P1752_A_SP193_18_L09TO	/data/gpfs-1/users/szyskam_c/scratch/projects/testdata/cellrangertestdata	221006	Gene Expression

@@ -3,8 +3,8 @@ paths:
     static: /fast/groups/ag_schmueck/work/ref/hg38 # optional, can be used to set the root path for the cellranger_config.yml 
     output_path: /data/gpfs-1/users/szyskam_c/scratch/projects/snaketest
     # all paths below are relative to snakemake root folder
-    Seqexcel: snakes/cellrangersnake/test/test_sample_info.xlsx # relative to the folder containing the Snakefile
-    ADT_file: snakes/cellrangersnake/test/testADT.xlsx # relative to the folder containing the Snakefile
-    sample_sheet: test/test_sample_sheet.csv # sample sheet as prescendence over Seqexcel file and will be used if it is given
+    Seqexcel: test/test_sample_info.xlsx # relative to the folder containing the Snakefile
+    ADT_file: test/testADT.xlsx # relative to the folder containing the Snakefile
+    # sample_sheet: test/test_sample_sheet.csv # sample sheet as prescendence over Seqexcel file and will be used if it is given
 configs:
     CR_config: test/cellranger_config.yml
