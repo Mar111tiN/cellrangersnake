@@ -1,5 +1,6 @@
 cellranger:
-    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A
+    transcriptome_path: 10x/refdata-gex-GRCh38-2020-A   # paths are relative to STATIC folder set in run-config.yml
+    VDJ_ref: 10x/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0   # paths are relative to STATIC folder
     threads: 30
     args: # arguments here are passed to the Cellranger invocation as is
         - --check-library-compatibility=false

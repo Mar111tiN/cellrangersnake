@@ -20,7 +20,7 @@
 ### Install cellranger Software Suite and Accessories
 * Download and install cellranger software (follow instructions in [official download page](https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest))
   + cellranger is under licence and needs to be downloaded from the official page
-* extract software: `$ tar -xzvf cellranger-7.0.1.tar.gz && mv cellranger-7.0.1 `<target_path>
+* extract software: `$ tar -xzvf cellranger-*.tar.gz && mv cellranger* `<target_path>
 * make cellranger executables accessible to your environment. There are two options:
   + add to PATH: 
     * For global access add `export PATH=<target_path>/bin:$PATH` to your `~/.bash_profile` file 
@@ -30,7 +30,10 @@
   + `wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz`
   + data is large (17GB for hg38) and recommended to be stored centrally on cluster for shared access (group folder etc.): `$ tar -xzvf refdata-gex*`
   + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml
-
+* Download and extract VDJ data
+  + `curl -O https://cf.10xgenomics.com/supp/cell-vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0.tar.gz && tar -xf refdata-cellranger-vdj-* && rm refdata-cellranger-vdj*.tar.gz`
+  + optimally, store this centrally on cluster in same folder as ref-data
+  + set the `<ref-data>`-folder as transcriptome_path in config/cellranger_config.yml
 
 ## Setup a run
 The cellrangersnake pipeline is controlled globally by the config yaml-file you can edit with a simple text-editor. Here, you basically set the paths to the data, output folder and required setup files. These setup files are:
