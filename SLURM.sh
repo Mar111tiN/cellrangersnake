@@ -37,7 +37,6 @@ conda activate cellranger-env;
 echo $CONDA_PREFIX "activated";
 
 
-# !!! leading white space is important
 SLURM_CLUSTER="sbatch -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 SLURM_CLUSTER="$SLURM_CLUSTER -o ${LOGDIR}/{rule}-%j.log";
 snakemake --unlock

@@ -31,57 +31,7 @@ def make_scRNA_df(config):
         show_output(f"Using sample sheet {config['paths']['sample_sheet']}")
         print(sample_df)
         return sample_df
-    
-    sample_excel = get_path('Seqexcel', file_type="sequencing overview", config=config, base_folder=snakedir)
-    # load the analysis_df for fastq-path and
-    dfs = {}
-    for sheet in ['SeqAnalysis', 'Status']:
-        df = read_seqexcel_sheet(sample_excel, sheet=sheet)
-        col_dict = {col:col.replace("-SingleCell", "") for col in df.columns if col.endswith("SingleCell")}
-        dfs[sheet] = df.loc[:, col_dict.keys()].rename(col_dict, axis=1).reset_index(drop=True).loc[lambda x: x['Sample'].notna(), :]
-        dfs[sheet] = dfs[sheet].drop(['type', 'SeqStatus'], axis=1)
-    
-    dfs['SeqAnalysis'] = dfs['SeqAnalysis'].loc[lambda x: x['Preprocess'] == 0, :]
-    # get the Library df
 
-    df = read_seqexcel_sheet(sample_excel, sheet="Libraries")
-    df.columns = [col.replace("-SingleCell", "") for col in df.columns]
-    cols = df.columns
-    for c in ['conc', 'FragSize', 'Index']:
-        cols = [col for col in cols if not c in col]
-    df = df.loc[:, cols]
-
-    #extract the GEX and FB dataframes and concat
-    dc = {
-        "GEX":"Gene Expression",
-        "FeatureBarcode": "Antibody Capture"
-    }
-    for c in dc.keys():
-        cols = ['Sample'] + [col for col in df.columns if col.endswith(c)]
-        dfs[c] = df.loc[df[f'BIMSB-ID-{c}'].notna(), cols].rename({col:col.replace(f"-{c}", "") for col in df.columns}, axis=1)
-        dfs[c]['library_type'] = dc[c]
-    dfs['Lib'] = pd.concat([dfs['GEX'], dfs['FeatureBarcode']]).sort_values("Sample")
-    dfs['Lib'][:3]
-    df = dfs['Status'].loc[:, [
-        'Sample', 'Date', 'scProject'
-    ]].merge(dfs['SeqAnalysis'].loc[:, [
-        'Sample', 'fastq-path'
-    ]], on=['Sample']).merge(dfs['Lib']).rename({'fastq-path':'fastqs'}, axis=1)
-    # convert fields
-    # Run field for use in ADT setup
-    df['Run'] = df['Date'].astype(str).str.split(" ").str[0].str.replace("^20", "", regex=True).str.replace("-", "", regex=False)
-    for col in ['Pool-ID', 'scProject', 'BIMSB-ID', 'Sample']:
-        df[col] = df[col].fillna("")
-    
-    # convert integer_type BIMSB-IDs to three-digits
-    df.loc[df['BIMSB-ID'].astype(str).str.match("^[0-9]+$"), 'BIMSB-ID'] = df['BIMSB-ID'].astype(str).str.zfill(3)
-    print(df['BIMSB-ID'])
-    
-    df['sample'] = df['Pool-ID'] + "_" + df['scProject'] + "_" + df['BIMSB-ID'].astype(str) + "_" + df['Sample']
-    df.loc[:, 'sample'] = df['sample'].str.lstrip("_").str.replace("__", "_")
-    sample_df = df.loc[:, ['Sample', 'sample', 'fastqs', 'Run', 'library_type']].set_index("Sample")
-    sample_df.to_csv("test_samples.csv", sep="\t")
-    return sample_df
 
 def get_adf(run, ADT_excel=""):
     '''

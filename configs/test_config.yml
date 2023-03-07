@@ -1,0 +1,14 @@
+---
+code:
+    py_core:
+        - Sites/Bio/cellrangersnake/scripts/py
+paths:
+    base_path: Sites/Bio/cellrangersnake
+    static: /fast/groups/ag_schmueck/work/ref/hg38
+    output_path: /Users/martinszyska/Dropbox/Icke/Work/10x/output
+    # all paths below are relative to snakemake root folder
+    Seqexcel: ""
+    ADT_file: info/ADT.xlsx
+    sample_sheet: sheets/test_samples.csv # sample sheet as prescendence over Seqexcel file and will be used if it is given
+configs:
+    CR_config: configs/cellranger_config.yml

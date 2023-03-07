@@ -23,9 +23,7 @@ config = add_config(config, config_name="CR_config")
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df = make_scRNA_df(config)
 
-# export for testing
-sample_df.to_csv("info_sample.tsv", sep="\t")
-
+# create the ADT files for feature barcoding 
 make_ADT_files(sample_df)
 
 # ############ INCLUDES ##############################  
