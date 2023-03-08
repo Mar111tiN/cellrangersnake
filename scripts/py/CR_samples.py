@@ -69,14 +69,15 @@ def get_read(_type, config):
     return [f"{read.lower()}-length,{length}\n" for read, length in config['cellranger']['Reads'][_type].items()]
 
 
-def get_CRargs(config, tool="cellranger"):
+def get_CRargs(config):
     CRargs = config['cellranger']['args']
     return [arg.replace("--", "").replace("=", ",").replace(" ", ",") + "\n" for arg in CRargs]
 
 
+
 def get_CRmulti_args(config):
-    CRargs = config['CRmulti_args']['args']
-    return [arg.replace("--", "").replace("=", ",").replace(" ", ",") + "\n" for arg in CRargs]
+    CRmulti_args = config['cellranger']['CRmulti_args']
+    return [arg.replace("--", "").replace("=", ",").replace(" ", ",") + "\n" for arg in CRmulti_args]
 
 
 def make_multi_lib_file(sc_df, sample="", filepath="", config={}):

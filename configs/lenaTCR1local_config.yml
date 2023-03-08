@@ -1,4 +1,7 @@
 ---
+code:
+    py_core:
+        - Sites/Bio/cellrangersnake/scripts/py
 paths:
     static: /Users/martinszyska/Dropbox/Icke/Work/static/hg38
     output_path: /Users/martinszyska/Dropbox/Icke/Work/10x/output/cellrangerpipe

@@ -16,12 +16,9 @@ configfile: "configs/lenaTCR1local_config.yml"
 workdir: config['paths']['output_path']
 
 
-# include helper functions
-include: "includes/utils.smk"
-
 
 # load the sample independent config file
-config = add_config(config, config_name="CR_config")
+config = add_config(config, config_name="CR_config", snakedir=snakedir)
 
 # print(config)
 

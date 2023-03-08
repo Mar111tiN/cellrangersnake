@@ -14,7 +14,7 @@ def main(s):
     w = s.wildcards
     p = s.params
 
-    make_multi_lib_file(p.samples, sample=str(w.sample), filepath=str(s.output), run_config=s.config)
+    make_multi_lib_file(p.samples, sample=str(w.sample), filepath=str(s.output), config=s.config)
 
 
 if __name__ == "__main__":

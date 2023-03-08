@@ -1,7 +1,4 @@
 ---
-code:
-    py_core:
-        - Sites/Bio/cellrangersnake/scripts/py
 paths:
     base_path: Sites/Bio/cellrangersnake
     static: /fast/groups/ag_schmueck/work/ref/hg38

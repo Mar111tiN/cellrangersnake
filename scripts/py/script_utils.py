@@ -45,6 +45,23 @@ def load_config_file(config_file):
         return load(stream, Loader=Loader)
 
 
+def add_config(config, path="", config_name="", snakedir=""):
+    '''
+    update the config file with a config either 
+    - from a path relative to snakedir
+    - from a config name listed in the configs list
+    '''
+    if config_name:
+        config_file = os.path.join(snakedir, config['configs'][config_name])
+    else:
+        config_file = os.path.join(snakedir, path)
+
+    with open(config_file, "r") as stream:
+        added_config = load(stream, Loader=Loader)
+        config.update(added_config)
+    return config
+
+
 def static_path(file, config={}):
     '''
     returns the absolute path when given relative to static folder

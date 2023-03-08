@@ -22,8 +22,8 @@ rule run_cellranger:
     params:
         CRmulti_args=get_CRmulti_args
     shell:
-        "cellranger multi --localcores {threads} --id={wildcards.sample} --libraries=lib_files/library_{wildcards.sample}.csv "
-        "--transcriptome={params.transcripts}{params.feature_ref}{params.CR_args}; "
-        "rm {wildcards.sample}/_*; "
-        "rm -r {wildcards.sample}/SC_RNA_COUNTER_CS; "
+        "cellranger multi --localcores {threads} --id={wildcards.sample} --csv={input} "
+        "{params.CRmulti_args}; "
         "touch cellranger/{wildcards.sample}.done"
+        # "rm {wildcards.sample}/_*; "
+        # "rm -r {wildcards.sample}/SC_RNA_COUNTER_CS; "
