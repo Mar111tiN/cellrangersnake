@@ -1,0 +1,9 @@
+---
+paths:
+    static: /Users/martinszyska/Dropbox/Icke/Work/static/hg38
+    output_path: /Users/martinszyska/Dropbox/Icke/Work/10x/output/cellrangerpipe
+    # all paths below are relative to snakemake root folder
+    ADT_file: info/ADT.xlsx
+    sample_sheet: sheets/lena_samples.csv
+configs:
+    CR_config: configs/cellranger_config.yml

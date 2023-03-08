@@ -6,6 +6,9 @@ cellranger:
     args: # arguments here are passed to the Cellranger invocation as is
         - --check-library-compatibility=false
         - --chemistry SC5P-PE
+CRmulti:
+    args:
+        - --chemistry SC5P-PE
     Reads:
         GEX:
             R1: 26

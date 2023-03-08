@@ -1,7 +1,20 @@
-from script_utils import show_output, get_path
+from script_utils import *
 import os
 import pandas as pd
 import numpy as np
+
+
+def make_scRNA_df(config, **kwargs):
+    '''
+    creates from all single cell infos in the sample_excel a condensed library_df
+    '''
+    # test for existence of sample_sheet
+    sample_sheet = get_path('sample_sheet', config=config, **kwargs)
+    if sample_sheet:
+        sample_df = pd.read_csv(sample_sheet, sep="\t").set_index('Sample')
+        show_output(f"Using sample sheet {config['paths']['sample_sheet']}")
+        print(sample_df)
+        return sample_df
 
 
 def get_adf(run, ADT_excel=""):
@@ -15,19 +28,29 @@ def get_adf(run, ADT_excel=""):
     adf.loc[:, ['read', 'pattern', 'feature_type']] = ['R2', '5PNNNNNNNNNN(BC)NNNNNNNNN', 'Antibody Capture']
     return adf
 
+def get_ADT_path(run):
+    '''
+    path getter
+    '''
+    return f"ADT_files/ADT_{run}.csv"
 
-def make_ADT_files(sc_df, config={}):
+
+def make_ADT_files(sc_df, **kwargs):
     '''
     create a unique ADT file for each run in the sc_df
     '''
-
+    if not os.path.isdir("ADT_files"):
+        os.mkdir("ADT_files")
     runs = []
-    for run in sc_df.loc[sc_df['library_type'] == "Antibody Capture", 'Run'].unique():
-        adf = get_adf(run, get_path('ADT_file', file_type="ADT excel file", config=config))
-        adf.to_csv(os.path.join(config['paths']['output_path'], f"ADT_{run}.csv"), sep=",", index=False)
-        runs.append(run)
-    show_output(f"Created ADT feature files for runs {', '.join(runs)}")
-
+    CITEseq_runs = sc_df.loc[sc_df['library_type'] == "Antibody Capture", 'Run'].unique()
+    # check if Antibody Capture has been used
+    if len(CITEseq_runs):
+        for run in CITEseq_runs:
+            adf_excel = get_path('ADT_file', file_type="ADT excel file", **kwargs)
+            adf = get_adf(run, adf_excel)
+            runs.append(str(run))
+            adf.to_csv(get_ADT_path(run), sep=",", index=False)
+        show_output(f"Created ADT feature files for runs {', '.join(runs)}", color="success")
 
 
 def make_lib_file(sc_df, sample="", filepath=""):
@@ -39,31 +62,30 @@ def make_lib_file(sc_df, sample="", filepath=""):
     return lib_df
 
 
-def get_ADT_path(run):
-    '''
-    path getter for the ADT file created by make_ADT_files
-    '''
-    return f"ADT_files/ADT_{run}.csv"
-
-
 def get_read(_type, config):
     '''
     returns the read-string for each library type
     '''
     return [f"{read.lower()}-length,{length}\n" for read, length in config['cellranger']['Reads'][_type].items()]
 
-def get_CRargs(config):
+
+def get_CRargs(config, tool="cellranger"):
     CRargs = config['cellranger']['args']
     return [arg.replace("--", "").replace("=", ",").replace(" ", ",") + "\n" for arg in CRargs]
 
 
-def make_multi_lib_file(sc_df, sample="", filepath="", run_config={}):
+def get_CRmulti_args(config):
+    CRargs = config['CRmulti_args']['args']
+    return [arg.replace("--", "").replace("=", ",").replace(" ", ",") + "\n" for arg in CRargs]
+
+
+def make_multi_lib_file(sc_df, sample="", filepath="", config={}):
     '''
     the sample sheet writer combining a library_df and info from config into a valid MiniSeq sample sheet
     '''
     
     libs_df = sc_df.loc[sample]
-    c = run_config['cellranger']
+    c = config['cellranger']
     # write to file
     with open(filepath, 'w') as f:
         if 'Gene Expression' in libs_df['library_type'].values:

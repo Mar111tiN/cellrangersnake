@@ -1,3 +1,6 @@
+from CR_samples import get_CRmulti_args
+
+
 rule make_lib: 
     output:
         "lib_files/library_{sample}.csv"
@@ -17,9 +20,7 @@ rule run_cellranger:
     output:
         "cellranger/{sample}.done"
     params:
-        transcripts=static_path(config['cellranger']['transcriptome_path']),
-        feature_ref=ADT_CLI,
-        CR_args=get_CR_args
+        CRmulti_args=get_CRmulti_args
     shell:
         "cellranger multi --localcores {threads} --id={wildcards.sample} --libraries=lib_files/library_{wildcards.sample}.csv "
         "--transcriptome={params.transcripts}{params.feature_ref}{params.CR_args}; "

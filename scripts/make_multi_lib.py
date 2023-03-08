@@ -1,7 +1,7 @@
 import os
 import sys
 
-# add ebscore package to sys.path
+# add py folder to sys.path for function loading
 sys.path.append(os.path.join(snakemake.scriptdir, "py"))
 
 from CR_samples import make_multi_lib_file

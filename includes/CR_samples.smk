@@ -2,23 +2,6 @@ import os
 import pandas as pd
 import numpy as np
 
-def read_seqexcel_sheet(sample_excel, sheet=""):
-    '''
-    reads the sheet of the sequencing excel table and converts the column headers
-    '''
-    
-    # get the df 
-    df = pd.read_excel(sample_excel, sheet_name=sheet).loc[:, lambda s: ~s.iloc[0].isna()]
-    col_df = df.T.reset_index().iloc[:, :2].rename({'index':"main", 0:"name"}, axis=1)
-    col_df.loc[col_df['main'].str.startswith("Unnamed"), "main"] = np.nan
-    col_df['main'] = col_df['main'].fillna(method="ffill").fillna("").str.replace(" ", "")
-    col_df.loc[:, "col"] = col_df['name'].str.cat(others=col_df['main'], sep="-").str.rstrip("-")
-    cols = col_df['col']
-    df.columns = cols
-    df = df.iloc[1:, :].reset_index(drop=True)
-    df = df.loc[lambda r: ~r['SampleInfo'].isna(), :]
-    return df
-
 
 def make_scRNA_df(config):
     '''
